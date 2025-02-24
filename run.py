@@ -125,7 +125,7 @@ def main():
     if args.command != []:
         docker_args += ["-e", "COMMAND=%s" % ' '.join(args.command)]
     if args.build_local:
-        docker_args += ["-v", "%s:/home/builder/rpmbuild" %
+        docker_args += ["-v", "%s:/home/builder/rpmbuild:z" %
                         os.path.abspath(args.build_local)]
         docker_args += ["-e", "BUILD_LOCAL=1"]
     if args.define:
