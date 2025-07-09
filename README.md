@@ -22,6 +22,9 @@ If you have both installed, docker will be used by default.  If you
 want to use a specific container runtime, set `XCPNG_OCI_RUNNER` to
 the docker-compatible command to use (typically `podman` or `docker`).
 
+You'll need to install git-lfs to be able to download the source tarballs from
+git, otherwise when running run.py, it won't be able to extract the sources.
+
 ## Building the container image(s)
 
 You need one container image per target version of XCP-ng.
@@ -36,6 +39,9 @@ Usage: ./build.sh {version_of_XCP_ng}
 ```
 
 ## Using the container
+
+Install the `run.py` script with
+`uv tool install --from path/to/xcp-ng-build-env xcp-ng-build`.
 
 Use the `run.py` script. It accepts a variety of parameters allowing for different uses:
 * rebuild an existing source RPM (with automated installation of the build dependencies)
@@ -103,7 +109,7 @@ optional arguments:
 
 Rebuild an existing source RPM (with automated installation of the build dependencies)
 ```sh
-./run.py -b 8.0 --rebuild-srpm /path/to/some-source-rpm.src.rpm --output-dir /path/to/output/directory --rm
+run.py -b 8.2 --rebuild-srpm /path/to/some-source-rpm.src.rpm --output-dir /path/to/output/directory --rm
 ```
 
 Build from git (and put the result into RPMS/ and SRPMS/ subdirectories)
@@ -116,7 +122,7 @@ git clone https://github.com/xcp-ng-rpms/xapi.git
 # ... Here add your patches ...
 
 # Build.
-/path/to/run.py -b 8.0 --build-local xapi/ --rm
+run.py -b 8.2 --build-local xapi/ --rm
 ```
 
 **Important switches**
@@ -157,11 +163,11 @@ make
 
 If you'd like to develop using the tools on your host and preserve the changes
 to source and revision control but still use the container for building, you
-can do using by mouning a volume in the container, using the `-v` option to mount
+can do using by mounting a volume in the container, using the `-v` option to mount
 a directory from your host to a suitable point inside the container. For
 example, if I clone some repos into a directory on my host, say `/work/code/`,
 then I can mount it inside the container as follows:
 
 ```sh
-./run.py -b 8.0 -v /work/code:/mnt/repos
+run.py -b 8.2 -v /work/code:/mnt/repos
 ```
